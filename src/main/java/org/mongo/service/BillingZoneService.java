@@ -7,6 +7,7 @@ import org.mongo.entity.BillingZoneByDistance;
 import org.mongo.entity.BillingZoneByLocation;
 import org.mongo.entity.ZipCode;
 import org.mongo.request.BillingZoneRequest;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashSet;
@@ -30,30 +31,25 @@ public class BillingZoneService {
             BillingZoneByDistance.persist(billingZoneByDistance);
             return Response.ok(billingZoneByDistance).build();
         } else {
-            for (String zipCode : billingZoneRequest.getZipCodes()){
-                ZipCode result=ZipCode.find("zipCode",zipCode).firstResult();
-                if (result==null){
-                    return Response.status(Response.Status.BAD_REQUEST).entity(zipCode+" invalid zip code..!").build();
-                }
+            String pattern = "^(\\d{3}|\\d{5})$";
+            String zipCode=billingZoneRequest.getZipCodes().get(0);
+            if (!zipCode.matches(pattern)) {
+                return Response.status(Response.Status.BAD_REQUEST).entity(zipCode + " invalid zip code..!").build();
             }
-            Set<Integer> uniqueZipCodePrefixCheck  = new HashSet<>();
+           BillingZoneByLocation billingZoneByLocation= BillingZoneByLocation.find("accountId = ?1 and zoneType = ?2 and zipCodes = ?3",accountId,zoneType,zipCode).firstResult();
+
+           if (billingZoneByLocation!=null){
+               return Response.status(Response.Status.BAD_REQUEST).entity("zip code "+zipCode+ "already exists in "+billingZoneByLocation.getName()).build();
+           }
             Set<Integer> zipCodeRanges = new HashSet<>();
-            for (String zipCode : billingZoneRequest.getZipCodes()) {
-                int zipCodePrefix  = Integer.parseInt(zipCode.substring(0, 3));
-                zipCodePrefix  = zipCodePrefix  * 100;
-                if (uniqueZipCodePrefixCheck .contains(zipCodePrefix )) {
-                    return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("Zip code range starting with " + zipCodePrefix  + " already exists.")
-                            .build();
-                }
-                uniqueZipCodePrefixCheck .add(zipCodePrefix );
+                int zipCodePrefix = Integer.parseInt(zipCode.substring(0, 3));
+                zipCodePrefix = zipCodePrefix * 100;
                 for (int i = 1; i <= 100; i++) {
                     zipCodeRanges.add(zipCodePrefix + i);
                 }
-            }
-            BillingZoneByLocation billingZoneByLocation = new BillingZoneByLocation(accountId, billingZoneRequest, zoneType, zipCodeRanges);
-            BillingZoneByLocation.persist(billingZoneByLocation);
-            return Response.ok(billingZoneByLocation).build();
+            BillingZoneByLocation newBillingZone = new BillingZoneByLocation(accountId, billingZoneRequest, zoneType, zipCodeRanges);
+            BillingZoneByLocation.persist(newBillingZone);
+            return Response.ok(newBillingZone).build();
         }
     }
 

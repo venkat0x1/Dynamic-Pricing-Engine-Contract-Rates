@@ -1,11 +1,12 @@
 package org.mongo.request;
+import java.util.List;
 import java.util.Set;
 
 public class BillingZoneRequest {
     private String name;
     private double minDistance;
     private double maxDistance;
-    private Set<String> zipCodes;
+    private List<String> zipCodes;
 
     public BillingZoneRequest() {
     }
@@ -34,11 +35,11 @@ public class BillingZoneRequest {
         this.maxDistance = maxDistance;
     }
 
-    public Set<String> getZipCodes() {
+    public List<String> getZipCodes() {
         return zipCodes;
     }
 
-    public void setZipCodes(Set<String> zipCodes) {
+    public void setZipCodes(List<String> zipCodes) {
         this.zipCodes = zipCodes;
     }
 }

@@ -24,7 +24,7 @@ public class BillingZoneByLocation extends PanacheMongoEntity {
     private String zoneType;
 
     @BsonProperty("zip_codes")
-    private Set<String> zipCodes;
+    private List<String> zipCodes;
 
     @BsonProperty("zip_codes_to_compare")
     private Set<Integer> zipCodesToCompare;
@@ -38,7 +38,7 @@ public class BillingZoneByLocation extends PanacheMongoEntity {
     public BillingZoneByLocation() {
     }
 
-    public BillingZoneByLocation(String name, ObjectId accountId, String zoneType, Set<String> zipCodes, Set<Integer> zipCodesToCompare, Date updatedAt, Date createdAt) {
+    public BillingZoneByLocation(String name, ObjectId accountId, String zoneType, List<String> zipCodes, Set<Integer> zipCodesToCompare, Date updatedAt, Date createdAt) {
         this.name = name;
         this.accountId = accountId;
         this.zoneType = zoneType;
@@ -81,11 +81,11 @@ public class BillingZoneByLocation extends PanacheMongoEntity {
         this.zoneType = zoneType;
     }
 
-    public Set<String> getZipCodes() {
+    public List<String> getZipCodes() {
         return zipCodes;
     }
 
-    public void setZipCodes(Set<String> zipCodes) {
+    public void setZipCodes(List<String> zipCodes) {
         this.zipCodes = zipCodes;
     }
 
