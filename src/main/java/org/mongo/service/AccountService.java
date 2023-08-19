@@ -5,7 +5,6 @@ import jakarta.ws.rs.core.Response;
 import org.bson.types.ObjectId;
 import org.mongo.entity.Account;
 import org.mongo.request.AccountRequest;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -14,10 +13,10 @@ public class AccountService {
 
     public Response createAccount(AccountRequest accountRequest) {
         Account account = new Account(accountRequest.getAccountName());
-        Account.persist(account);
         if (account.getName() == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Enter name.").build();
         }
+        Account.persist(account);
         return Response.ok(account).build();
     }
 
@@ -33,9 +32,12 @@ public class AccountService {
 
     public Response updateAccount(ObjectId id, AccountRequest accountRequest) {
         Account account = Account.findById(id);
+        if (account == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Account not found with id : " + id).build();
+        }
         account.setName(accountRequest.getAccountName());
         account.setUpdatedAt(Timestamp.from(Instant.now()));
-        account.persist();
+        account.update();
         return Response.ok().entity("Account details updated..!").build();
     }
 
