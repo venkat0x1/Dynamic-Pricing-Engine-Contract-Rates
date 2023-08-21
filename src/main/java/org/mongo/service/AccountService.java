@@ -12,10 +12,10 @@ import java.time.Instant;
 public class AccountService {
 
     public Response createAccount(AccountRequest accountRequest) {
-        Account account = new Account(accountRequest.getAccountName());
-        if (account.getName() == null) {
+        if (accountRequest.getAccountName()== null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Enter name.").build();
         }
+        Account account = new Account(accountRequest.getAccountName());
         Account.persist(account);
         return Response.ok(account).build();
     }

@@ -9,7 +9,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.mongo.request.BillingZoneRequest;
 import org.mongo.service.BillingZoneService;
 
-@Path("/billing-zones/{accountId}")
+@Path("/{accountId}/billing-zones")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class BillingZoneResource {
@@ -24,16 +24,18 @@ public class BillingZoneResource {
 
     @GET
     @Path("/all")
-    public Response getBillingZones(@PathParam("accountId") ObjectId accountId, @QueryParam("zoneType") String zoneType) {
-        return billingZoneService.getBillingZonesByAccountIdAndZoneType(accountId, zoneType);
+    public Response getBillingAllZonesByAccountId(@PathParam("accountId") ObjectId accountId, @QueryParam("zoneType") String zoneType) {
+        return billingZoneService.getBillingZonesByAccountId(accountId);
     }
 
     @GET
+    @Path("/{id}")
     public Response getBillingZoneById(@PathParam("accountId") ObjectId accountId,@PathParam("id") ObjectId id){
         return billingZoneService.getBillingZoneById(id);
     }
 
     @DELETE
+    @Path("/{id}")
     public Response deleteBillingZone(@PathParam("accountId") ObjectId accountId,@PathParam("id") ObjectId id){
         return billingZoneService.deleteBillingZoneByIdAndZoneType(id);
     }
