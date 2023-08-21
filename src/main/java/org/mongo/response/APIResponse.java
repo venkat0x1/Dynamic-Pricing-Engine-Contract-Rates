@@ -1,4 +1,4 @@
-//package org.mongo.resource;
+//package org.mongo.response;
 //
 //import jakarta.ws.rs.core.Response;
 //
@@ -8,11 +8,11 @@
 //    private String message;
 //    private Object data;
 //
-//    public static APIResponse success(Object data) {
+//    public static Response success(Object data) {
 //        APIResponse response = new APIResponse();
 //        response.setSuccess(true);
 //        response.setData(data);
-//        return response;
+//        return Response.ok(response).build();
 //    }
 //
 //    public static Response success(String message, Object data) {

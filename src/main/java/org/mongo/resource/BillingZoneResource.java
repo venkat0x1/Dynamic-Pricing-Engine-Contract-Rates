@@ -18,13 +18,13 @@ public class BillingZoneResource {
     private BillingZoneService billingZoneService;
 
     @POST
-    public Response addBillingZone(@PathParam("accountId") ObjectId accountId,@QueryParam("zoneType") String zoneType, @RequestBody BillingZoneRequest billingZoneRequest) {
-        return billingZoneService.addBillingZone(accountId,zoneType, billingZoneRequest);
+    public Response addBillingZone(@PathParam("accountId") ObjectId accountId, @RequestBody BillingZoneRequest billingZoneRequest) {
+        return billingZoneService.addBillingZone(accountId, billingZoneRequest);
     }
 
     @GET
     @Path("/all")
-    public Response getBillingAllZonesByAccountId(@PathParam("accountId") ObjectId accountId, @QueryParam("zoneType") String zoneType) {
+    public Response getAllBillingZonesByAccountId(@PathParam("accountId") ObjectId accountId) {
         return billingZoneService.getBillingZonesByAccountId(accountId);
     }
 
@@ -37,7 +37,7 @@ public class BillingZoneResource {
     @DELETE
     @Path("/{id}")
     public Response deleteBillingZone(@PathParam("accountId") ObjectId accountId,@PathParam("id") ObjectId id){
-        return billingZoneService.deleteBillingZoneByIdAndZoneType(id);
+        return billingZoneService.deleteBillingZoneById(id);
     }
 
 }

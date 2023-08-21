@@ -27,8 +27,8 @@ public class Account extends PanacheMongoEntity {
         this.updatedAt = updatedAt;
     }
 
-    public Account(String account) {
-        this.name = account;
+    public Account(String accountName) {
+        this.name = accountName;
         this.createdAt = new Date();
     }
 

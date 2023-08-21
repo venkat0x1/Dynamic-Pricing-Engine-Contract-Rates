@@ -5,6 +5,7 @@ import jakarta.ws.rs.core.Response;
 import org.bson.types.ObjectId;
 import org.mongo.entity.Account;
 import org.mongo.request.AccountRequest;
+//import org.mongo.response.APIResponse;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -17,6 +18,7 @@ public class AccountService {
         }
         Account account = new Account(accountRequest.getAccountName());
         Account.persist(account);
+//        return APIResponse.success(account);
         return Response.ok(account).build();
     }
 

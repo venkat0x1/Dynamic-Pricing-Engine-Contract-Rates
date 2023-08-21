@@ -7,6 +7,7 @@ import java.util.Set;
 public class BillingZoneRequest {
     private ObjectId billingZoneId;
     private String name;
+    private String zoneType;
     private double minDistance;
     private double maxDistance;
     private Set<String> zipCodes;
@@ -44,5 +45,13 @@ public class BillingZoneRequest {
 
     public void setBillingZoneId(ObjectId billingZoneId) {
         this.billingZoneId = billingZoneId;
+    }
+
+    public String getZoneType() {
+        return zoneType;
+    }
+
+    public void setZoneType(String zoneType) {
+        this.zoneType = zoneType;
     }
 }

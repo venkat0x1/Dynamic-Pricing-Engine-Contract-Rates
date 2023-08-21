@@ -6,10 +6,9 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.mongo.request.BillingZoneRequest;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 @MongoEntity(collection = "billing_zones")
 public class BillingZone extends PanacheMongoEntity {
@@ -32,11 +31,11 @@ public class BillingZone extends PanacheMongoEntity {
     @BsonProperty("zip_codes")
     private Set<String> zipCodes;
 
-//    @BsonProperty("zip_codes_to_compare")
-//    private Set<Integer> zipCodesToCompare;
+    @BsonProperty("zip_codes_to_compare")
+    private Set<Integer> zipCodesToCompare;
 
-    @BsonProperty("zipCodesToCompare")
-    private Set<Integer> zipCodesToCompare = new HashSet<>();
+//    @BsonProperty("zipCodesToCompare")
+//    private Set<Integer> zipCodesToCompare = new HashSet<>();
 
     @BsonProperty("updated_at")
     private Date updatedAt;
@@ -47,14 +46,27 @@ public class BillingZone extends PanacheMongoEntity {
     public BillingZone() {
     }
 
-    public BillingZone(ObjectId accountId,String zoneType,BillingZoneRequest billingZoneRequest) {
+    public BillingZone(ObjectId accountId,BillingZoneRequest billingZoneRequest) {
         this.name = billingZoneRequest.getName();
         this.accountId = accountId;
-        this.zoneType = zoneType;
+        this.zoneType = billingZoneRequest.getZoneType();
         this.minDistance = billingZoneRequest.getMinDistance();
         this.maxDistance = billingZoneRequest.getMaxDistance();
         this.createdAt = new Date();
     }
+
+
+//    public BillingZone(ObjectId accountId, BillingZoneRequest billingZoneRequest) {
+//        this.name = billingZoneRequest.getName();
+//        this.accountId = accountId;
+//        this.zoneType = billingZoneRequest.getZoneType();
+//
+//        DecimalFormat df = new DecimalFormat("#0.00", DecimalFormatSymbols.getInstance(Locale.US));
+//        this.minDistance = Double.parseDouble(df.format(billingZoneRequest.getMinDistance()));
+//        this.maxDistance = Double.parseDouble(df.format(billingZoneRequest.getMaxDistance()));
+//
+//        this.createdAt = new Date();
+//    }
 
     public BillingZone(ObjectId accountId,String zoneType,BillingZoneRequest billingZoneRequest,Set<Integer> zipCodesToCompare) {
         this.name = billingZoneRequest.getName();
